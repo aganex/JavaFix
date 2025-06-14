@@ -20,6 +20,7 @@ public class GamePanel extends javax.swing.JPanel {
         this.listener = listener;
         initComponents();
         
+        
         // Inisialisasi komponen
         titleLabel.setText("Tebak Impostor");
         clueLabel.setText("Clue: ???");
@@ -65,34 +66,153 @@ public class GamePanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel3 = new javax.swing.JPanel();
+        titleLabel1 = new javax.swing.JLabel();
+        infoLabel1 = new javax.swing.JLabel();
+        clueLabel1 = new javax.swing.JLabel();
+        scoreLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        tebakButton1 = new javax.swing.JButton();
+        backButton1 = new javax.swing.JButton();
+        statusLabel1 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        playerList1 = new javax.swing.JList<>();
         titleLabel = new javax.swing.JLabel();
         infoLabel = new javax.swing.JLabel();
-        clueLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        playerList = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        PanelTombolGab = new javax.swing.JPanel();
         tebakButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        playerList = new javax.swing.JList<>();
+        panelClueScore = new javax.swing.JPanel();
+        clueLabel = new javax.swing.JLabel();
         scoreLabel = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 245, 228));
+        jPanel3.setBackground(new java.awt.Color(255, 245, 228));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        titleLabel.setText("Tebak Impostor - Round 1");
+        titleLabel1.setText("Tebak Impostor - Round 1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(1, 228, 0, 0);
+        jPanel3.add(titleLabel1, gridBagConstraints);
 
-        infoLabel.setText("Pemain: 5 | Impostor: 1 | ❤️❤️❤️");
+        infoLabel1.setText("Pemain: 5 | Impostor: 1 | ❤️❤️❤️");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(7, 213, 0, 0);
+        jPanel3.add(infoLabel1, gridBagConstraints);
 
-        clueLabel.setText("Clue: Tempat Umum");
+        clueLabel1.setText("Clue: Tempat Umum");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 126, 0, 0);
+        jPanel3.add(clueLabel1, gridBagConstraints);
 
-        playerList.setModel(new javax.swing.AbstractListModel<String>() {
+        scoreLabel1.setText("Score: 0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 71, 0, 0);
+        jPanel3.add(scoreLabel1, gridBagConstraints);
+
+        jPanel4.setBackground(new java.awt.Color(255, 245, 228));
+        jPanel4.setLayout(new java.awt.GridBagLayout());
+
+        tebakButton1.setText("Tebak");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 6;
+        jPanel4.add(tebakButton1, gridBagConstraints);
+
+        backButton1.setText("Kembali");
+        backButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel4.add(backButton1, gridBagConstraints);
+
+        statusLabel1.setText("Status: Silahkan Pilih Pemain");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 12, 0, 12);
+        jPanel4.add(statusLabel1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(42, 199, 17, 0);
+        jPanel3.add(jPanel4, gridBagConstraints);
+
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 652);
+        jPanel3.add(jPanel5, gridBagConstraints);
+
+        playerList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Player 1", "Player 2", "Player 3", "Player 4", "Player 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(playerList);
+        playerList1.setPreferredSize(new java.awt.Dimension(250, 159));
+        jScrollPane2.setViewportView(playerList1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 246;
+        gridBagConstraints.ipady = 130;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(17, 154, 0, 0);
+        jPanel3.add(jScrollPane2, gridBagConstraints);
+
+        setBackground(new java.awt.Color(255, 245, 228));
+        setMaximumSize(new java.awt.Dimension(400, 150));
+        setPreferredSize(new java.awt.Dimension(700, 581));
+
+        titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        titleLabel.setText("Tebak Impostor - Round 1");
+
+        infoLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        infoLabel.setText("Pemain: 5 | Impostor: 1 | ❤️❤️❤️");
+
+        PanelTombolGab.setBackground(new java.awt.Color(255, 245, 228));
+        PanelTombolGab.setLayout(new java.awt.GridBagLayout());
 
         tebakButton.setText("Tebak");
+        PanelTombolGab.add(tebakButton, new java.awt.GridBagConstraints());
 
         backButton.setText("Kembali");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -100,73 +220,89 @@ public class GamePanel extends javax.swing.JPanel {
                 backButtonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        PanelTombolGab.add(backButton, gridBagConstraints);
 
         statusLabel.setText("Status: Silahkan Pilih Pemain");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 12, 0, 12);
+        PanelTombolGab.add(statusLabel, gridBagConstraints);
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+
+        playerList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Player 1", "Player 2", "Player 3", "Player 4", "Player 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        playerList.setPreferredSize(new java.awt.Dimension(250, 159));
+        jScrollPane1.setViewportView(playerList);
+
+        panelClueScore.setLayout(new java.awt.GridBagLayout());
+
+        clueLabel.setText("Clue: Tempat Umum");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 10);
+        panelClueScore.add(clueLabel, gridBagConstraints);
 
         scoreLabel.setText("Score: 0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 15, 3, 15);
+        panelClueScore.add(scoreLabel, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(213, 213, 213)
-                                .addComponent(infoLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(126, 126, 126)
-                                .addComponent(clueLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(228, 228, 228)
-                                .addComponent(titleLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(scoreLabel)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(107, 107, 107))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(222, 222, 222)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(statusLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tebakButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(backButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(titleLabel)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(514, 514, 514)
+                            .addComponent(PanelTombolGab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(434, 434, 434)
+                            .addComponent(infoLabel))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(486, 486, 486)
+                            .addComponent(panelClueScore, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(414, 414, 414)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(430, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(titleLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(scoreLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoLabel)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87)
+                .addComponent(titleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(clueLabel)
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton)
-                    .addComponent(tebakButton))
+                .addComponent(infoLabel)
                 .addGap(18, 18, 18)
-                .addComponent(statusLabel)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addComponent(panelClueScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78)
+                .addComponent(PanelTombolGab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(246, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -176,17 +312,35 @@ public class GamePanel extends javax.swing.JPanel {
     }
     }//GEN-LAST:event_backButtonActionPerformed
 
+    private void backButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanelTombolGab;
     private javax.swing.JButton backButton;
+    private javax.swing.JButton backButton1;
     private javax.swing.JLabel clueLabel;
+    private javax.swing.JLabel clueLabel1;
     private javax.swing.JLabel infoLabel;
+    private javax.swing.JLabel infoLabel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel panelClueScore;
     private javax.swing.JList<String> playerList;
+    private javax.swing.JList<String> playerList1;
     private javax.swing.JLabel scoreLabel;
+    private javax.swing.JLabel scoreLabel1;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel statusLabel1;
     private javax.swing.JButton tebakButton;
+    private javax.swing.JButton tebakButton1;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
 }
