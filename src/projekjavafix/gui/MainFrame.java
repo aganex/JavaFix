@@ -2,38 +2,52 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package projekjavafix.gui;
+
+    package projekjavafix.gui;
 
 import java.awt.CardLayout;
 
-/**
- *
- * @author Adinata
- */
 public class MainFrame extends javax.swing.JFrame {
     private StartPanel startPanel;
+    private GamePanel gamePanel;
     
-    /**
-     * Creates new form MainFrame
-     */
-    public MainFrame() {
-        initComponents();
-        addCustomPanels();
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    // Interface untuk navigasi
+    public interface NavigationListener {
+        void showStartPanel();
+        void showGamePanel();
     }
 
-    
-    private void addCustomPanels() {
-        startPanel = new StartPanel(this); // this = MainFrame
-        mainPanel.add(startPanel, "start");
-        CardLayout cl = (CardLayout) mainPanel.getLayout();
-        cl.show(mainPanel, "start");
+    // Implementasi navigasi
+    private final NavigationListener navigationListener = new NavigationListener() {
+        @Override
+        public void showStartPanel() {
+            switchPanel("start");
+        }
+
+        @Override
+        public void showGamePanel() {
+            if (gamePanel == null) {
+                gamePanel = new GamePanel(navigationListener);
+                mainPanel.add(gamePanel, "game");
+            }
+            switchPanel("game");
+        }
+        
+        private void switchPanel(String panelName) {
+            CardLayout cl = (CardLayout) mainPanel.getLayout();
+            cl.show(mainPanel, panelName);
+        }
+    };
+
+    public MainFrame() {
+        initComponents(); // Ini akan menginisialisasi mainPanel
+        setupPanels();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
-    public void showGamePanel() {
-        GamePanel gamePanel = new GamePanel();
-        mainPanel.add(gamePanel, "game");
-        CardLayout cl = (CardLayout) mainPanel.getLayout();
-        cl.show(mainPanel, "game");
+    
+    private void setupPanels() {
+        startPanel = new StartPanel(navigationListener);
+        mainPanel.add(startPanel, "start");
     }
 
 

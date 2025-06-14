@@ -3,17 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package projekjavafix.gui;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author Adinata
  */
 public class StartPanel extends javax.swing.JPanel {
-    private MainFrame mainFrame;
-    public StartPanel(MainFrame mainFrame) {
-    this.mainFrame = mainFrame;
-    initComponents();
+    private final MainFrame.NavigationListener listener;
+    
+    public StartPanel(MainFrame.NavigationListener listener) {
+        this.listener = listener;
+        initComponents();
     }
+
 
 
     /**
@@ -79,8 +81,13 @@ public class StartPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnMulaiMouseClicked
 
     private void btnMulaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMulaiActionPerformed
-        if (mainFrame != null) {
-            mainFrame.showGamePanel();
+        if (listener != null) {
+            listener.showGamePanel();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Navigation error: Listener not initialized",
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnMulaiActionPerformed
 

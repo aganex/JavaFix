@@ -12,17 +12,22 @@ import javax.swing.JOptionPane;
  * @author Adinata
  */
 public class GamePanel extends javax.swing.JPanel {
+    private final MainFrame.NavigationListener listener;
     /**
      * Creates new form GamePanel
      */
-    public GamePanel() {
+    public GamePanel(MainFrame.NavigationListener listener) {
+        this.listener = listener;
         initComponents();
-
+        
+        // Inisialisasi komponen
         titleLabel.setText("Tebak Impostor");
         clueLabel.setText("Clue: ???");
         scoreLabel.setText("Score: 0");
-        playerList.setModel(new javax.swing.DefaultListModel<>());
 
+        
+
+        // Setup tombol
         tebakButton.addActionListener(e -> {
             String selected = playerList.getSelectedValue();
             if (selected != null) {
@@ -31,6 +36,7 @@ public class GamePanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Pilih dulu salah satu pemain!");
             }
         });
+        
     }
     
     public void setPlayerList(java.util.List<String> players) {
@@ -165,7 +171,9 @@ public class GamePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-
+        if (listener != null) {
+        listener.showStartPanel();
+    }
     }//GEN-LAST:event_backButtonActionPerformed
 
 
