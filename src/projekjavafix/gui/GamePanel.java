@@ -5,40 +5,96 @@
 package projekjavafix.gui;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-
+import projekjavafix.controller.GameController;
+import projekjavafix.controller.GameController.GuessResult;
 
 /**
  *
  * @author Adinata
  */
 public class GamePanel extends javax.swing.JPanel {
+    
     private final MainFrame.NavigationListener listener;
-    /**
-     * Creates new form GamePanel
-     */
+    private GameController gameController;
+    
     public GamePanel(MainFrame.NavigationListener listener) {
         this.listener = listener;
         initComponents();
-        
-        
-        // Inisialisasi komponen
-        titleLabel.setText("Tebak Impostor");
-        clueLabel.setText("Clue: ???");
-        scoreLabel.setText("Score: 0");
-
-        
-
-        // Setup tombol
-        tebakButton.addActionListener(e -> {
-            String selected = playerList.getSelectedValue();
-            if (selected != null) {
-                System.out.println("Kamu memilih: " + selected);
-            } else {
-                JOptionPane.showMessageDialog(this, "Pilih dulu salah satu pemain!");
-            }
-        });
-        
+        initializeGame();
+        setupEventListeners();
     }
+    
+    private void initializeGame() {
+        resetGame();
+        updateGameDisplay();
+    }
+    
+    private void resetGame() {
+        this.gameController = new GameController();
+    }
+    
+    private void setupEventListeners() {
+        tebakButton.addActionListener(e -> handleGuess());
+        backButton.addActionListener(e -> listener.showStartPanel());
+    }
+    
+    private void handleGuess() {
+        String selected = playerList.getSelectedValue();
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
+            return;
+        }
+        
+        // Extract just the player name (remove description if present)
+        String playerName = selected.split(" - ")[0].trim();
+        
+        GuessResult result = gameController.processGuess(playerName);
+        JOptionPane.showMessageDialog(this, result.message);
+        
+        if (result.isGameOver) {
+            int option = JOptionPane.showConfirmDialog(
+                this, 
+                "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
+                "Game Over",
+                JOptionPane.YES_NO_OPTION
+            );
+            
+            if (option == JOptionPane.YES_OPTION) {
+                resetGame();
+                updateGameDisplay();
+            } else {
+                listener.showStartPanel();
+            }
+            return;
+        }
+        
+        updateGameDisplay();
+    }
+    
+    private void updateGameDisplay() {
+        // Update player list with descriptions
+        DefaultListModel<String> model = new DefaultListModel<>();
+        gameController.getPlayers().forEach(player -> {
+            String description = gameController.getPlayerDescription(player);
+            model.addElement(player + " - " + description);
+        });
+        playerList.setModel(model);
+        
+        // Update game info
+        clueLabel.setText("Clue: " + gameController.getCurrentClue());
+        scoreLabel.setText("Score: " + gameController.getScore());
+        roundLabel.setText("Round: " + gameController.getRound());
+        
+        // Update lives display
+        String hearts = "❤️".repeat(gameController.getLives());
+        livesLabel.setText(hearts);
+        
+        // Update game status
+        titleLabel.setText("Tebak Impostor - Round " + gameController.getRound());
+        infoLabel.setText("Pemain: " + gameController.getPlayers().size() + " | Impostor: 1");
+    }
+
+
     
     public void setPlayerList(java.util.List<String> players) {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -92,6 +148,8 @@ public class GamePanel extends javax.swing.JPanel {
         panelClueScore = new javax.swing.JPanel();
         clueLabel = new javax.swing.JLabel();
         scoreLabel = new javax.swing.JLabel();
+        livesLabel = new javax.swing.JLabel();
+        roundLabel = new javax.swing.JLabel();
 
         jPanel3.setBackground(new java.awt.Color(255, 245, 228));
         jPanel3.setLayout(new java.awt.GridBagLayout());
@@ -203,10 +261,10 @@ public class GamePanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(700, 581));
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        titleLabel.setText("Tebak Impostor - Round 1");
+        titleLabel.setText("Tebak Impostor -");
 
         infoLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        infoLabel.setText("Pemain: 5 | Impostor: 1 | ❤️❤️❤️");
+        infoLabel.setText("Pemain: 5 | Impostor: 1");
 
         PanelTombolGab.setBackground(new java.awt.Color(255, 245, 228));
         PanelTombolGab.setLayout(new java.awt.GridBagLayout());
@@ -265,44 +323,60 @@ public class GamePanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(3, 15, 3, 15);
         panelClueScore.add(scoreLabel, gridBagConstraints);
 
+        livesLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        livesLabel.setText("❤❤❤");
+
+        roundLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        roundLabel.setText("Round 1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(titleLabel)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(514, 514, 514)
+                        .addComponent(PanelTombolGab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(414, 414, 414)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(399, 399, 399)
+                        .addComponent(titleLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(roundLabel))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(514, 514, 514)
-                            .addComponent(PanelTombolGab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(434, 434, 434)
-                            .addComponent(infoLabel))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(486, 486, 486)
-                            .addComponent(panelClueScore, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(414, 414, 414)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(430, Short.MAX_VALUE))
+                            .addContainerGap()
+                            .addComponent(panelClueScore, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(442, 442, 442)
+                            .addComponent(infoLabel)
+                            .addGap(18, 18, 18)
+                            .addComponent(livesLabel))))
+                .addContainerGap(247, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87)
-                .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(infoLabel)
-                .addGap(18, 18, 18)
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleLabel)
+                    .addComponent(roundLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(infoLabel)
+                    .addComponent(livesLabel))
+                .addGap(60, 60, 60)
                 .addComponent(panelClueScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(78, 78, 78)
                 .addComponent(PanelTombolGab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -331,9 +405,11 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel livesLabel;
     private javax.swing.JPanel panelClueScore;
     private javax.swing.JList<String> playerList;
     private javax.swing.JList<String> playerList1;
+    private javax.swing.JLabel roundLabel;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreLabel1;
     private javax.swing.JLabel statusLabel;

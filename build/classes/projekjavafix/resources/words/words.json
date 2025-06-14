@@ -1,0 +1,22 @@
+[
+  {
+    "clue": "Orang yang suka tidur",
+    "umum": [
+      "Saya suka minum kopi",
+      "Saya suka minum teh",
+      "Saya kerja 18 jam sehari",
+      "Saya nonton TV seharian"
+    ],
+    "impostor": "Saya suka minuman manis"
+  },
+  {
+    "clue": "Suka olahraga",
+    "umum": [
+      "Saya main bola",
+      "Saya jogging tiap pagi",
+      "Saya suka naik gunung",
+      "Saya renang seminggu sekali"
+    ],
+    "impostor": "Saya duduk main game 10 jam"
+  }
+]
