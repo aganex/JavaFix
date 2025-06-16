@@ -7,6 +7,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import projekjavafix.controller.GameController;
 import projekjavafix.controller.GameController.GuessResult;
+import projekjavafix.controller.GameController.Player;
 
 /**
  *
@@ -39,61 +40,48 @@ public class GamePanel extends javax.swing.JPanel {
         backButton.addActionListener(e -> listener.showStartPanel());
     }
     
-    private void handleGuess() {
-    String selected = playerList.getSelectedValue();
-    if (selected == null) {
-        JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
-        return;
-    }
-
-    String playerName = selected.split(" - ")[0].trim();
-    GuessResult result = gameController.processGuess(playerName);
-    
-    JOptionPane.showMessageDialog(this, result.message);
-    
-    if (result.isGameOver) {
-        int option = JOptionPane.showConfirmDialog(
-            this, 
-            "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
-            "Game Over",
-            JOptionPane.YES_NO_OPTION
-        );
-        
-        if (option == JOptionPane.YES_OPTION) {
-            resetGame();
-            updateGameDisplay();
-        } else {
-            // PERBAIKAN: Reset game sebelum kembali ke StartPanel
-            gameController.resetGame(); 
-            listener.showStartPanel();
-        }
-        return;
-    }
-    
-    updateGameDisplay();
-}
-    
     private void updateGameDisplay() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        gameController.getPlayers().forEach(player -> {
-            String description = gameController.getPlayerDescription(player);
-            model.addElement(player + " - " + description);
-        });
+        for (Player player : gameController.getPlayers()) { // Now works with the import
+            model.addElement(player.getName() + " - " + player.getRole());
+        }
         playerList.setModel(model);
-        playerList.repaint();
         
-        // Update game info
-        clueLabel.setText("Clue: " + gameController.getCurrentClue());
-        scoreLabel.setText("Score: " + gameController.getScore());
-        roundLabel.setText("Round: " + gameController.getRound());
+        clueLabel.setText("Petunjuk: " + gameController.getNextClue());
+        scoreLabel.setText("Skor: " + gameController.getScore());
+        livesLabel.setText("Nyawa: " + "❤".repeat(gameController.getLives()));
+        roundLabel.setText("Ronde: " + gameController.getRound());
+    }
+    
+    private void handleGuess() {
+        String selected = playerList.getSelectedValue();
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
+            return;
+        }
         
-        // Update lives display
-        String hearts = "❤️".repeat(gameController.getLives());
-        livesLabel.setText(hearts);
+        String playerName = selected.split(" - ")[0].trim();
+        GuessResult result = gameController.processGuess(playerName);
         
-        // Update game status
-        titleLabel.setText("Tebak Impostor -");
-        infoLabel.setText("Pemain: " + gameController.getPlayers().size() + " | Impostor: 1");
+        JOptionPane.showMessageDialog(this, result.message);
+        
+        if (result.isGameOver) {
+            int option = JOptionPane.showConfirmDialog(
+                this, 
+                "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
+                "Game Over",
+                JOptionPane.YES_NO_OPTION
+            );
+            
+            if (option == JOptionPane.YES_OPTION) {
+                resetGame();
+            } else {
+                listener.showStartPanel();
+                return;
+            }
+        }
+        
+        updateGameDisplay();
     }
 
 
