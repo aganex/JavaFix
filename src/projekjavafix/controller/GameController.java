@@ -65,8 +65,9 @@ public class GameController {
         this.score = 0;
         this.lives = maxLives;
         this.round = 1;
-        this.gameStarted = true;
-        selectNewImpostor();
+        this.gameStarted = true; 
+        Collections.shuffle(players); 
+        selectNewImpostor(); 
     }
     
     public void selectNewImpostor() {

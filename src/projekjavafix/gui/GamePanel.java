@@ -31,6 +31,7 @@ public class GamePanel extends javax.swing.JPanel {
     
     private void resetGame() {
         this.gameController = new GameController();
+        playerList.clearSelection();
     }
     
     private void setupEventListeners() {
@@ -39,46 +40,47 @@ public class GamePanel extends javax.swing.JPanel {
     }
     
     private void handleGuess() {
-        String selected = playerList.getSelectedValue();
-        if (selected == null) {
-            JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
-            return;
+    String selected = playerList.getSelectedValue();
+    if (selected == null) {
+        JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
+        return;
+    }
+
+    String playerName = selected.split(" - ")[0].trim();
+    GuessResult result = gameController.processGuess(playerName);
+    
+    JOptionPane.showMessageDialog(this, result.message);
+    
+    if (result.isGameOver) {
+        int option = JOptionPane.showConfirmDialog(
+            this, 
+            "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
+            "Game Over",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (option == JOptionPane.YES_OPTION) {
+            resetGame();
+            updateGameDisplay();
+        } else {
+            // PERBAIKAN: Reset game sebelum kembali ke StartPanel
+            gameController.resetGame(); 
+            listener.showStartPanel();
         }
-        
-        // Extract just the player name (remove description if present)
-        String playerName = selected.split(" - ")[0].trim();
-        
-        GuessResult result = gameController.processGuess(playerName);
-        JOptionPane.showMessageDialog(this, result.message);
-        
-        if (result.isGameOver) {
-            int option = JOptionPane.showConfirmDialog(
-                this, 
-                "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
-                "Game Over",
-                JOptionPane.YES_NO_OPTION
-            );
-            
-            if (option == JOptionPane.YES_OPTION) {
-                resetGame();
-                updateGameDisplay();
-            } else {
-                listener.showStartPanel();
-            }
-            return;
-        }
-        
-        updateGameDisplay();
+        return;
     }
     
+    updateGameDisplay();
+}
+    
     private void updateGameDisplay() {
-        // Update player list with descriptions
         DefaultListModel<String> model = new DefaultListModel<>();
         gameController.getPlayers().forEach(player -> {
             String description = gameController.getPlayerDescription(player);
             model.addElement(player + " - " + description);
         });
         playerList.setModel(model);
+        playerList.repaint();
         
         // Update game info
         clueLabel.setText("Clue: " + gameController.getCurrentClue());
@@ -90,7 +92,7 @@ public class GamePanel extends javax.swing.JPanel {
         livesLabel.setText(hearts);
         
         // Update game status
-        titleLabel.setText("Tebak Impostor - Round " + gameController.getRound());
+        titleLabel.setText("Tebak Impostor -");
         infoLabel.setText("Pemain: " + gameController.getPlayers().size() + " | Impostor: 1");
     }
 
@@ -261,7 +263,7 @@ public class GamePanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(700, 581));
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        titleLabel.setText("Tebak Impostor -");
+        titleLabel.setText("Tebak Impostor");
 
         infoLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         infoLabel.setText("Pemain: 5 | Impostor: 1");
@@ -327,7 +329,7 @@ public class GamePanel extends javax.swing.JPanel {
         livesLabel.setText("❤❤❤");
 
         roundLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        roundLabel.setText("Round 1");
+        roundLabel.setText("-");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -356,7 +358,7 @@ public class GamePanel extends javax.swing.JPanel {
                             .addComponent(infoLabel)
                             .addGap(18, 18, 18)
                             .addComponent(livesLabel))))
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -204,7 +204,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="247" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -239,7 +239,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="36" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Tebak Impostor -"/>
+        <Property name="text" type="java.lang.String" value="Tebak Impostor"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="infoLabel">
@@ -365,7 +365,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="36" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Round 1"/>
+        <Property name="text" type="java.lang.String" value="-"/>
       </Properties>
     </Component>
   </SubComponents>
