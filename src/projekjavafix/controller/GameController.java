@@ -90,7 +90,7 @@ public class GameController {
 
     private void shufflePlayersAndSelectImpostor() {
     Collections.shuffle(players);
-    this.impostor = players.get(random.nextInt(players.size())); // Pilih random, bukan selalu index 0
+    this.impostor = players.get(random.nextInt(players.size()));
     this.remainingClues = new ArrayList<>(impostor.getClues());
     }
 
@@ -104,7 +104,6 @@ public class GameController {
 
     public GuessResult processGuess(String guessedPlayer) {
         if (!gameStarted) {
-            // Automatically reset game if someone tries to play when game is over
             resetGame();
             return new GuessResult(false, false, "Game telah direset! Silakan tebak lagi.");
         }

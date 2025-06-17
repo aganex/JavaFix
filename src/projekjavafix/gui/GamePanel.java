@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package projekjavafix.gui;
 import java.util.List;
 
@@ -9,7 +6,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import projekjavafix.controller.GameController;
 import projekjavafix.controller.GameController.GuessResult;
-import projekjavafix.controller.GameController.Player;
 
 /**
  *
@@ -76,7 +72,6 @@ private void handleGuess() {
         return;
     }
     
-    // Ekstrak nama pemain dengan lebih robust
     String playerName = selected.split(" - ")[0].trim()
                          .replace("(IMPOSTOR)", "").trim();
     
@@ -96,14 +91,13 @@ private void handleGuess() {
         
         if (option == JOptionPane.YES_OPTION) {
             resetGame();
-            updateGameDisplay(); // Pastikan update setelah reset
+            updateGameDisplay(); 
         } else {
             listener.showStartPanel();
         }
         return;
     }
     
-    // Update display setelah tebakan (baik benar/salah)
     updateGameDisplay();
     
     // Debug log setelah update
