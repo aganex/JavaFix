@@ -85,7 +85,15 @@ public class GameController {
         Collections.shuffle(players);
         this.impostor = players.get(0);
         this.remainingClues = new ArrayList<>(impostor.getClues());
+        shufflePlayersAndSelectImpostor();
     }
+
+    private void shufflePlayersAndSelectImpostor() {
+    Collections.shuffle(players);
+    this.impostor = players.get(random.nextInt(players.size())); // Pilih random, bukan selalu index 0
+    this.remainingClues = new ArrayList<>(impostor.getClues());
+    }
+
     
     public String getNextClue() {
         if (remainingClues.isEmpty() || impostor == null) {
@@ -96,7 +104,9 @@ public class GameController {
 
     public GuessResult processGuess(String guessedPlayer) {
         if (!gameStarted) {
-            return new GuessResult(false, false, "Game belum dimulai!");
+            // Automatically reset game if someone tries to play when game is over
+            resetGame();
+            return new GuessResult(false, false, "Game telah direset! Silakan tebak lagi.");
         }
         
         if (guessedPlayer == null || guessedPlayer.isEmpty()) {
@@ -109,14 +119,14 @@ public class GameController {
             score += 100;
             round++;
             selectNewImpostor();
-            return new GuessResult(true, false, "Benar! +100 poin");
+            return new GuessResult(true, false, "Benar! +100 poin. Ronde berikutnya!");
         } else {
             lives = Math.max(0, lives - 1);
             
             if (isGameOver()) {
                 gameStarted = false;
                 return new GuessResult(false, true, 
-                    "Salah! Game Over. Skor akhir: " + score);
+                    "Salah! Game Over. Skor akhir: " + score + ".");
             }
             
             return new GuessResult(false, false, 
@@ -126,8 +136,9 @@ public class GameController {
     
     private void selectNewImpostor() {
         Collections.shuffle(players);
-        this.impostor = players.get(0);
+        this.impostor = players.get(random.nextInt(players.size()));
         this.remainingClues = new ArrayList<>(impostor.getClues());
+        Collections.shuffle(remainingClues);
     }
     
     public boolean isGameOver() {

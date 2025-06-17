@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package projekjavafix.gui;
+import java.util.List;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import projekjavafix.controller.GameController;
@@ -41,47 +43,72 @@ public class GamePanel extends javax.swing.JPanel {
     }
     
     private void updateGameDisplay() {
-        DefaultListModel<String> model = new DefaultListModel<>();
-        for (Player player : gameController.getPlayers()) { // Now works with the import
-            model.addElement(player.getName() + " - " + player.getRole());
-        }
-        playerList.setModel(model);
-        
-        clueLabel.setText("Petunjuk: " + gameController.getNextClue());
-        scoreLabel.setText("Skor: " + gameController.getScore());
-        livesLabel.setText("Nyawa: " + "❤".repeat(gameController.getLives()));
-        roundLabel.setText("Ronde: " + gameController.getRound());
+    DefaultListModel<String> model = new DefaultListModel<>();
+    
+    // Dapatkan daftar pemain yang sudah di-shuffle
+    List<GameController.Player> players = gameController.getPlayers();
+    GameController.Player currentImpostor = gameController.getImpostor();
+    
+    // Tambahkan debug log
+    System.out.println("Current impostor: " + currentImpostor.getName());
+    System.out.println("Player order:");
+    
+    for (GameController.Player player : players) {
+        String displayText = player.getName() + " - " + player.getRole();
+        model.addElement(displayText);
+        System.out.println("- " + displayText);
     }
     
-    private void handleGuess() {
-        String selected = playerList.getSelectedValue();
-        if (selected == null) {
-            JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
-            return;
+    playerList.setModel(model);
+    playerList.setSelectedIndex(-1); // Reset selection
+    
+    // Update komponen UI
+    clueLabel.setText("Petunjuk: " + gameController.getCurrentClue());
+    scoreLabel.setText("Skor: " + gameController.getScore());
+    livesLabel.setText("Nyawa: " + "❤".repeat(gameController.getLives()));
+    roundLabel.setText("Ronde: " + gameController.getRound());
+}
+
+private void handleGuess() {
+    String selected = playerList.getSelectedValue();
+    if (selected == null) {
+        JOptionPane.showMessageDialog(this, "Pilih pemain terlebih dahulu!");
+        return;
+    }
+    
+    // Ekstrak nama pemain dengan lebih robust
+    String playerName = selected.split(" - ")[0].trim()
+                         .replace("(IMPOSTOR)", "").trim();
+    
+    System.out.println("Player guessed: " + playerName);
+    System.out.println("Actual impostor: " + gameController.getImpostor().getName());
+    
+    GuessResult result = gameController.processGuess(playerName);
+    JOptionPane.showMessageDialog(this, result.message);
+    
+    if (result.isGameOver) {
+        int option = JOptionPane.showConfirmDialog(
+            this, 
+            "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
+            "Game Over",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (option == JOptionPane.YES_OPTION) {
+            resetGame();
+            updateGameDisplay(); // Pastikan update setelah reset
+        } else {
+            listener.showStartPanel();
         }
-        
-        String playerName = selected.split(" - ")[0].trim();
-        GuessResult result = gameController.processGuess(playerName);
-        
-        JOptionPane.showMessageDialog(this, result.message);
-        
-        if (result.isGameOver) {
-            int option = JOptionPane.showConfirmDialog(
-                this, 
-                "Game Over! Skor akhir: " + gameController.getScore() + "\nMain lagi?",
-                "Game Over",
-                JOptionPane.YES_NO_OPTION
-            );
-            
-            if (option == JOptionPane.YES_OPTION) {
-                resetGame();
-            } else {
-                listener.showStartPanel();
-                return;
-            }
-        }
-        
-        updateGameDisplay();
+        return;
+    }
+    
+    // Update display setelah tebakan (baik benar/salah)
+    updateGameDisplay();
+    
+    // Debug log setelah update
+    System.out.println("After guess - New impostor: " + gameController.getImpostor().getName());
+    System.out.println("Remaining clues: " + gameController.getImpostor().getClues().size());
     }
 
 
@@ -314,7 +341,7 @@ public class GamePanel extends javax.swing.JPanel {
         panelClueScore.add(scoreLabel, gridBagConstraints);
 
         livesLabel.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        livesLabel.setText("❤❤❤");
+        livesLabel.setText("♥♥♥");
 
         roundLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         roundLabel.setText("-");
@@ -346,7 +373,7 @@ public class GamePanel extends javax.swing.JPanel {
                             .addComponent(infoLabel)
                             .addGap(18, 18, 18)
                             .addComponent(livesLabel))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
